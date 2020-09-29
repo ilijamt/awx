@@ -151,6 +151,7 @@ from awx.api.views.root import ( # noqa
     ApiVersionRootView,
     ApiV2RootView,
     ApiV2PingView,
+    ApiV2HealthView,
     ApiV2ConfigView,
     ApiV2SubscriptionView,
 )

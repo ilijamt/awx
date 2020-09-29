@@ -327,3 +327,28 @@ class ApiV2ConfigView(APIView):
         except Exception:
             # FIX: Log
             return Response({"error": _("Failed to remove license.")}, status=status.HTTP_400_BAD_REQUEST)
+
+class ApiV2HealthView(APIView):
+    """A simple view that reports very basic health check information about this instance,
+       which is acceptable to be public information.
+    """
+    permission_classes = (AllowAny,)
+    authentication_classes = ()
+    name = _('Health')
+    swagger_topic = 'System Configuration'
+
+    def get(self, request, format=None):
+        """Return some basic information about this instance
+
+        Everything returned here should be considered public / insecure, as
+        this requires no auth and is intended for use by health check probes
+        to determine if the application is healthy.
+        """
+        healthy = True
+        response = {
+            'version': get_awx_version(),
+            'redis': False,
+            'db': False
+        }
+
+        return Response(response, status=status.HTTP_200_OK if healthy else status.HTTP_503_SERVICE_UNAVAILABLE)
